@@ -2,7 +2,7 @@
     <div id="menu" class="w-[300px] bg-gray-900 min-h-screen z-10 text-slate-300 fixed left-0 h-screen overflow-y-scroll">
       <app-side-menu-header></app-side-menu-header> 
       <app-side-menu-options></app-side-menu-options> 
-      <button class="btn btn-primary">Logout</button>
+      <button class="btn btn-secondary w-full mt-100" (click)="authService.logout()">Logout</button>
     </div>
     <div class="ml-[300px] px-4 flex flex-col flex-1 w-full h-full text-slate-800">
         <router-outlet />

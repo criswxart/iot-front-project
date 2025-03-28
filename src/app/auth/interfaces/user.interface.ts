@@ -1,6 +1,6 @@
 export interface User {
     name: string;
     userEnabled: string;
-    role: 'admin' | 'user';
+    role: 'ROLE_administrador' | 'ROLE_operario';
     token: string;
 }

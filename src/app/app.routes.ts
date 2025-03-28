@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
 import { DashboardComponent } from './core/pages/dashboard/dashboard.component';
+import { NotAuthenticatedGuard } from './auth/guards/not-authenticated.guard';
+import { IsAdminGuard } from './auth/guards/is-admin.guard';
 
 
 export const routes: Routes = [
@@ -8,6 +10,7 @@ export const routes: Routes = [
     path:'auth',
     loadChildren: () =>
       import('./auth/auth.routes').then((m) => m.authRoutes),
+    canMatch: [NotAuthenticatedGuard ]
   },
 
   {

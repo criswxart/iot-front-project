@@ -12,10 +12,9 @@ const baseUrl = environment.baseUrl;
 export class AuthService {
   private _authStatus = signal<authStatus>('checking');
   private _user = signal<User | null>(null);
-  private _token = signal<string | null>(null);
+  private _token = signal<string | null>(localStorage.getItem('token'));
 
   private http = inject(HttpClient);
-
   checkStatusResource = rxResource({
     loader:() => this.checkStatus()
   });
@@ -30,6 +29,7 @@ export class AuthService {
   });
 
   user = computed<User | null>(() => this._user());
+  isAdmin = computed(() => this._user()?.role.includes('ROLE_Administrador') ?? false);
   token = computed(this._token);
 
   login(username: string, password: string): Observable<boolean> {
@@ -56,7 +56,8 @@ export class AuthService {
       return of(false);
     }
     return this.http.get<User>(`${baseUrl}/auth/user`, {
-      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`)
+      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
+      withCredentials: true
     }).pipe(
       tap(user => {
        this.handleAuthSuccess({user, token});
@@ -69,27 +70,6 @@ export class AuthService {
     )
   }
 
-  // checkStatus(): Observable<boolean> {
-  //   const token = localStorage.getItem('token');
-  //   console.log(token);
-  //   if (!token) {
-  //     this.logout();
-  //     return of(false);
-  //   }
-  
-  //   return this.http.get<User>(`${baseUrl}/auth/user`, {
-  //     headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
-  //     withCredentials: true // 🔥 Enviar cookies como JSESSIONID si son necesarias
-  //   }).pipe(
-  //     tap(user => this.handleAuthSuccess({ user, token })), // 👀 Asegúrate de que `handleAuthSuccess` esté bien definida
-  //     map(() => true),
-  //     catchError((error) => {
-  //       console.error('Error en checkStatus:', error);
-  //       this.logout();
-  //       return of(false);
-  //     })
-  //   );
-  // }
   
   logout() {
     this._user.set(null);

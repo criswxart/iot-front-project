@@ -32,7 +32,7 @@ export class LoginComponent {
    const { username, password } = this.loginForm.value;
    this.authService.login(username!, password!).subscribe((isAuthenticated) => {
       if(isAuthenticated){
-        this.router.navigateByUrl('/dashboard');
+        this.router.navigateByUrl('/');
         return;
       }
       this.hasError.set(true);
