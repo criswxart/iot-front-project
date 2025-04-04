@@ -7,7 +7,11 @@ import { AuthService } from '../../../../auth/services/auth.service';
   templateUrl: './side-menu-header.component.html',
   styleUrl: './side-menu-header.component.css'
 })
-export class SideMenuHeaderComponent {
+export class SideMenuHeaderComponent  {
 
   authService = inject(AuthService);
+
+
+  
+
 }

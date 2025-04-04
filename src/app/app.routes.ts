@@ -15,6 +15,7 @@ export const routes: Routes = [
 
   {
     path: 'dashboard',
+    canMatch: [IsAdminGuard],
     loadComponent: () =>
       import('./core/pages/dashboard/dashboard.component').then(
         (m) => m.DashboardComponent

@@ -8,9 +8,15 @@ export const IsAdminGuard: CanMatchFn = async(
     segments: UrlSegment[]
 ) => {
 
-   const authService = inject(AuthService);
-
-   await firstValueFrom(authService.checkStatus());
-
-    return authService.isAdmin();
+    const authService = inject(AuthService);
+    const router = inject(Router);
+  
+    const isAuthenticated = authService.checkStatus();
+  
+    if (!isAuthenticated) {
+      router.navigateByUrl('/auth/login');
+      return false;
+    }
+  
+    return true;
 }

@@ -5,6 +5,7 @@ import { environment } from '../../../environments/environment.development';
 import { AuthResponse } from '../interfaces/auth-response.interface';
 import { catchError, map, Observable, of, tap } from 'rxjs';
 import { rxResource } from '@angular/core/rxjs-interop';
+import { Router } from '@angular/router';
 
 type authStatus = 'checking' | 'authenticated' | 'not-authenticated';
 const baseUrl = environment.baseUrl;
@@ -14,10 +15,10 @@ export class AuthService {
   private _user = signal<User | null>(null);
   private _token = signal<string | null>(localStorage.getItem('token'));
 
+  private router = inject(Router);
+
   private http = inject(HttpClient);
-  checkStatusResource = rxResource({
-    loader:() => this.checkStatus()
-  });
+ 
 
   authStatus = computed(() => {
     if (this._authStatus() === 'checking') return 'checking';
@@ -48,26 +49,39 @@ export class AuthService {
     )
   }
 
-  checkStatus():Observable<boolean> {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      console.log('entra al if');
-      this.logout();
-      return of(false);
+  // checkStatus():Observable<boolean> {
+  //   const token = localStorage.getItem('token');
+  //   if (!token) {
+  //     console.log('entra al if');
+  //     this.logout();
+  //     return of(false);
+  //   }
+  //   return this.http.get<User>(`${baseUrl}/auth/user`, {
+  //     headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
+  //     withCredentials: true
+  //   }).pipe(
+  //     tap(user => {
+  //      this.handleAuthSuccess({user, token});
+  //     }),
+  //     map(() => true),
+  //     catchError(() => {
+  //       this.logout();
+  //       return of(false);
+  //     })
+  //   )
+  // }
+  checkStatus(): boolean {
+    //const token = localStorage.getItem('token');
+  
+    const isValid = !!this.token();
+  
+    if (isValid) {
+      this._authStatus.set('authenticated');
+    } else {
+      this._authStatus.set('not-authenticated');
     }
-    return this.http.get<User>(`${baseUrl}/auth/user`, {
-      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
-      withCredentials: true
-    }).pipe(
-      tap(user => {
-       this.handleAuthSuccess({user, token});
-      }),
-      map(() => true),
-      catchError(() => {
-        this.logout();
-        return of(false);
-      })
-    )
+  
+    return isValid;
   }
 
   
@@ -76,14 +90,13 @@ export class AuthService {
     this._authStatus.set('not-authenticated');
     this._token.set(null);
     localStorage.removeItem('token');
-
+    this.router.navigate(['/auth/login']);
   }
 
   private handleAuthSuccess({user,token}: AuthResponse) {
     this._user.set(user);
     this._authStatus.set('authenticated');
     this._token.set(token);
-
     localStorage.setItem('token', token);
   }
 }
