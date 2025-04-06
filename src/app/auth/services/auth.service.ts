@@ -12,7 +12,9 @@ const baseUrl = environment.baseUrl;
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private _authStatus = signal<authStatus>('checking');
-  private _user = signal<User | null>(null);
+  private _user = signal<User | null>(
+    localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')!) : null
+  );
   private _token = signal<string | null>(localStorage.getItem('token'));
 
   private router = inject(Router);
@@ -98,5 +100,11 @@ export class AuthService {
     this._authStatus.set('authenticated');
     this._token.set(token);
     localStorage.setItem('token', token);
+    localStorage.setItem('user', JSON.stringify(user));
+  }
+
+  registerUser(user: any, token: string): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.post<any>(`${baseUrl}/register`, user, { headers });
   }
 }

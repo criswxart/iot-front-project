@@ -30,6 +30,20 @@ export const routes: Routes = [
           )
       },
       {
+        path: 'company',
+        loadComponent: () =>
+          import('./core/pages/company/company.component').then(
+            (m) => m.CompanyComponent
+          )
+      },
+      {
+        path: 'location',
+        loadComponent: () =>
+          import('./core/pages/location/location.component').then(
+            (m) => m.LocationComponent
+          )
+      },
+      {
         path: 'sensor',
         loadComponent: () =>
           import('./core/pages/sensor/sensor.component').then(

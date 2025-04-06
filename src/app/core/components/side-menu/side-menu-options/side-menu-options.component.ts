@@ -18,6 +18,18 @@ export class SideMenuOptionsComponent {
       route: '/dashboard/data'
     },
     {
+      icon: 'fa-solid fa-building',
+      label: 'Company',
+      subLabel: 'Company Data',
+      route: '/dashboard/company'
+    },
+    {
+      icon: 'fa-solid fa-location',
+      label: 'Location',
+      subLabel: 'Location Data',
+      route: '/dashboard/location'
+    },
+    {
       icon: 'fa-solid fa-microchip',
       label: 'Sensor',
       subLabel:'Data Sensor',

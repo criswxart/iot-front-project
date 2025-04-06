@@ -1,1 +1,192 @@
-<p>setting works!</p>
+<!-- <div class="max-w-lg custom p-6 bg-white shadow-md rounded-md">
+    <h2 class="text-2xl font-semibold text-center mb-6">Registrar Nuevo Usuario</h2>
+    <form (ngSubmit)="onSubmit()" #userForm="ngForm">
+      <div class="mb-4">
+        <label for="userName" class="block text-sm font-medium text-gray-700">Nombre de Usuario</label>
+        <input 
+          type="text" 
+          id="userName" 
+          name="userName" 
+          class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          [(ngModel)]="user.userName" 
+          required 
+        />
+      </div>
+  
+      <div class="mb-4">
+        <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
+        <input 
+          type="password" 
+          id="password" 
+          name="password" 
+          class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          [(ngModel)]="user.password" 
+          required 
+        />
+      </div>
+  
+      <div class="mb-4">
+        <label for="role" class="block text-sm font-medium text-gray-700">Rol</label>
+        <select 
+          id="role" 
+          name="role" 
+          class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          [(ngModel)]="user.role" 
+          required
+        >
+          <option value="USER">Usuario</option>
+          <option value="ADMINISTRADOR">Administrador</option>
+        </select>
+      </div>
+  
+      <div class="mb-4">
+        <button 
+          type="submit" 
+          [disabled]="userForm.invalid" 
+          class="w-full py-2 px-4 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 focus:outline-none"
+        >
+          Registrar Usuario
+        </button>
+      </div>
+  
+      <div *ngIf="errorMessage" class="text-red-500 text-sm mt-4 text-center">
+        {{ errorMessage }}
+      </div>
+  
+      <div *ngIf="successMessage" class="text-green-500 text-sm mt-4 text-center">
+        {{ successMessage }}
+      </div>
+    </form>
+  </div>
+   -->
+   <div class="max-w-lg custom p-6 bg-white shadow-md rounded-md">
+    <h2 class="text-2xl font-semibold text-center mb-6">Registrar Nuevo Usuario</h2>
+    <form (ngSubmit)="onSubmit()" #userForm="ngForm">
+      <!-- Nombre de Usuario -->
+      <div class="mb-4">
+        <label for="userName" class="block text-sm font-medium text-gray-700">Nombre de Usuario</label>
+        <input 
+          type="text" 
+          id="userName" 
+          name="userName" 
+          class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          [(ngModel)]="user.usuario.nombre_usuario" 
+          required 
+        />
+      </div>
+  
+      <!-- Contraseña -->
+      <div class="mb-4">
+        <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
+        <input 
+          type="password" 
+          id="password" 
+          name="password" 
+          class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          [(ngModel)]="user.usuario.clave" 
+          required 
+        />
+      </div>
+  
+      <!-- Estado de Cuenta Habilitada -->
+      <div class="mb-4">
+        <label for="accountEnabled" class="block text-sm font-medium text-gray-700">Cuenta Habilitada</label>
+        <input 
+          type="checkbox" 
+          id="accountEnabled" 
+          name="accountEnabled" 
+          [(ngModel)]="user.usuario.cuenta_habilitada"
+          class="mt-1"
+        />
+      </div>
+  
+      <!-- Estado de Cuenta Vencida -->
+      <div class="mb-4">
+        <label for="accountExpired" class="block text-sm font-medium text-gray-700">Cuenta Vencida</label>
+        <input 
+          type="checkbox" 
+          id="accountExpired" 
+          name="accountExpired" 
+          [(ngModel)]="user.usuario.cuenta_vencida"
+          class="mt-1"
+        />
+      </div>
+  
+      <!-- Estado de Cuenta Bloqueada -->
+      <div class="mb-4">
+        <label for="accountBlocked" class="block text-sm font-medium text-gray-700">Cuenta Bloqueada</label>
+        <input 
+          type="checkbox" 
+          id="accountBlocked" 
+          name="accountBlocked" 
+          [(ngModel)]="user.usuario.cuenta_bloqueada"
+          class="mt-1"
+        />
+      </div>
+  
+      <!-- Estado de Credenciales Vencidas -->
+      <div class="mb-4">
+        <label for="credentialsExpired" class="block text-sm font-medium text-gray-700">Credenciales Vencidas</label>
+        <input 
+          type="checkbox" 
+          id="credentialsExpired" 
+          name="credentialsExpired" 
+          [(ngModel)]="user.usuario.credenciales_vencidas"
+          class="mt-1"
+        />
+      </div>
+  
+      <!-- Roles -->
+      <div class="mb-4">
+        <label for="role" class="block text-sm font-medium text-gray-700">Rol</label>
+        <select 
+          id="role" 
+          name="role" 
+          class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          [(ngModel)]="user.usuario.roles" 
+          required
+        >
+          <option value="1">Administrador</option>
+          <option value="2">Operario</option>
+        </select>
+      </div>
+  
+      <!-- Permisos -->
+      <div class="mb-4">
+        <label for="permissions" class="block text-sm font-medium text-gray-700">Permisos</label>
+        <select 
+          id="permissions" 
+          name="permissions" 
+          class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          [(ngModel)]="user.permisos" 
+          multiple
+          required
+        >
+          <option value="1">Permiso CRUD</option>
+          <option value="2">Permiso Read</option>
+          <!-- Agrega más permisos según sea necesario -->
+        </select>
+      </div>
+  
+      <!-- Botón de Submit -->
+      <div class="mb-4">
+        <button 
+          type="submit" 
+          [disabled]="userForm.invalid" 
+          class="w-full py-2 px-4 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 focus:outline-none"
+        >
+          Registrar Usuario
+        </button>
+      </div>
+  
+      <!-- Mensajes de Error o Éxito -->
+      <div *ngIf="errorMessage" class="text-red-500 text-sm mt-4 text-center">
+        {{ errorMessage }}
+      </div>
+  
+      <div *ngIf="successMessage" class="text-green-500 text-sm mt-4 text-center">
+        {{ successMessage }}
+      </div>
+    </form>
+  </div>
+  
