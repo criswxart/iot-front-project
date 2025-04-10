@@ -1,11 +1,29 @@
-<div class="flex flex-col relative w-screen">
+<!-- <div class="flex flex-col relative w-screen">
     <div id="menu" class="w-[300px] bg-gray-900 min-h-screen z-10 text-slate-300 fixed left-0 h-screen overflow-y-scroll">
       <app-side-menu-header></app-side-menu-header> 
       <app-side-menu-options></app-side-menu-options> 
       <button class="btn btn-secondary w-full mt-100" (click)="authService.logout()">Logout</button>
     </div>
-    locas
     <div class="ml-[300px] px-4 flex flex-col flex-1 w-full h-full text-slate-800">
         <router-outlet />
     </div>
+</div> -->
+<div class="flex flex-col relative w-screen h-screen">
+  <!-- Menú lateral -->
+  <div id="menu" class="w-[300px] bg-gray-900 text-slate-300 fixed left-0 top-0 h-full flex flex-col">
+    <div class="flex-1 overflow-y-auto">
+      <!-- Contenido del menú -->
+      <app-side-menu-header></app-side-menu-header>
+      <app-side-menu-options></app-side-menu-options>
+    </div>
+
+    <!-- Botón de Logout al final -->
+    <button class="btn btn-secondary w-full mt-4 mb-4" (click)="authService.logout()">Logout</button>
+  </div>
+
+  <!-- Contenido principal -->
+  <div class="ml-[300px] px-4 flex flex-col flex-1 w-full h-full text-slate-800">
+    <router-outlet />
+  </div>
 </div>
+

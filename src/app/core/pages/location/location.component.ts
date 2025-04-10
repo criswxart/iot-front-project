@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { LocationService } from '../../../auth/services/location.service';
 
@@ -9,7 +9,7 @@ import { LocationService } from '../../../auth/services/location.service';
   templateUrl: './location.component.html',
   styleUrl: './location.component.css'
 })
-export class LocationComponent {
+export class LocationComponent implements OnInit {
   field = ''; // Campo de búsqueda (ciudad, pais, direccion, id, usuario)
   value = ''; // Valor a buscar
   results: any[] = []; // Resultado de la búsqueda
@@ -18,6 +18,12 @@ export class LocationComponent {
 
   
   locationService = inject(LocationService);
+
+  ngOnInit() {
+    this.search();
+  }
+
+
   search() {
     this.loading = true;
     this.errorMessage = '';

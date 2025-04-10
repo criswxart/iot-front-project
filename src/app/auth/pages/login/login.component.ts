@@ -2,17 +2,21 @@ import { Component, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
+import { BehaviorSubject } from 'rxjs';
+import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-login',
-  imports: [ ReactiveFormsModule],
+  imports: [ ReactiveFormsModule, CommonModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
+  isLoading = false; // Controla si el spinner debe mostrarse
 
   fb = inject(FormBuilder);
-  hasError = signal(false);
+  hasError = new BehaviorSubject<any>(false);
   isPosting = signal(false);
   authService = inject(AuthService);
   router = inject(Router);
@@ -23,24 +27,31 @@ export class LoginComponent {
 
   onSubmit() {
     if (this.loginForm.invalid) {
-      this.hasError.set(true);
+      this.hasError.next(true);  
       setTimeout(() => {
-        this.hasError.set(false)
+        this.hasError.next(false); 
       }, 2000);
       return;
     }
-   const { username, password } = this.loginForm.value;
-   this.authService.login(username!, password!).subscribe((isAuthenticated) => {
-      if(isAuthenticated){
-        this.router.navigateByUrl('/');
+
+    const { username, password } = this.loginForm.value;
+    this.isLoading = true;  // Activar el spinner
+
+    this.authService.login(username!, password!).subscribe((isAuthenticated) => {
+      
+
+      if (isAuthenticated) {
+        setTimeout(() => {
+          this.router.navigateByUrl('/');
+          this.isLoading = false;// Desactivar el spinner después de la respuesta
+        }, 5000);
         return;
       }
-      this.hasError.set(true);
-      setTimeout(() => {
-        this.hasError.set(false)
-      }, 2000);
 
-   });
+      this.hasError.next(true); 
+      setTimeout(() => {
+        this.hasError.next(false);  
+      }, 2000);
+    });
   }
-  
 }

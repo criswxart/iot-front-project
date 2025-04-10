@@ -103,8 +103,14 @@ export class AuthService {
     localStorage.setItem('user', JSON.stringify(user));
   }
 
-  registerUser(user: any, token: string): Observable<any> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.post<any>(`${baseUrl}/register`, user, { headers });
+  registerUser(user: any): Observable<any> {
+    const token = localStorage.getItem('token');
+  
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {})
+    });
+  
+    return this.http.post<any>(`${baseUrl}/auth/register`, user, { headers });
   }
 }
