@@ -53,6 +53,7 @@ export class SensorComponent {
           this.errorMessage = 'No se encontraron sensores para la API Key seleccionada.';
         } else {
           this.sensors = data;  // Asigna los datos si hay sensores encontrados
+          console.log('data sensor', this.sensors)
           this.errorMessage = ''; // Limpiar cualquier mensaje de error previo
         }
       },
@@ -75,6 +76,7 @@ export class SensorComponent {
     this.companyService.getCompanies(this.field, this.value).subscribe({
       next: (data) => {
         this.results = data;
+        console.log('data company', this.results)
         this.loading = false;
       },
       error: (err) => {
@@ -83,4 +85,6 @@ export class SensorComponent {
       }
     });
   }
+
+
 }

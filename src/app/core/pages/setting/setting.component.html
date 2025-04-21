@@ -75,10 +75,9 @@
         multiple
         required
       >
-        <option value="1">Permiso CRUD</option>
-        <option value="2">Permiso Read</option>
-        <option value="3">Permiso Write</option>
-        <option value="4">Permiso Delete</option>
+        <option value="1" *ngIf="user.roles == [1]">Permiso CRUD</option>
+        <option value="2" *ngIf="user.roles == [2]">Permiso Read</option>
+
       </select>
     </div>
 

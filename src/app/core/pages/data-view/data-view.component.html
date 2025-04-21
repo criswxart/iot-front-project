@@ -1,1 +1,94 @@
-<p>data-view works!</p>
+<div class="max-w-2xl mx-auto p-6 bg-white shadow-md rounded-md">
+  <h2 class="text-2xl font-semibold text-gray-800 mb-4">📊 Buscar Mediciones por Epoch</h2>
+
+  <!-- Formulario -->
+  <div class="space-y-4">
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Desde (epoch):</label>
+      <!-- <input type="number" [(ngModel)]="fromEpoch" placeholder="Ej: 1712672000"
+        class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" /> -->
+        <input
+          type="date"
+          [(ngModel)]="fromEpoch"
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Hasta (epoch):</label>
+      <!-- <input type="number" [(ngModel)]="toEpoch" placeholder="Ej: 1712758400"
+        class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" /> -->
+        <input
+          type="date"
+          [(ngModel)]="toEpoch"
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700">API Key de la compañía:</label>
+      <input type="text" [(ngModel)]="companyApiKey" placeholder="COMPANY-987654321"
+        class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+    </div>
+
+    <div class="flex justify-end">
+      <button (click)="buscarMediciones()"
+        class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg transition duration-200">
+        Buscar
+      </button>
+    </div>
+  </div>
+
+  <!-- Indicadores -->
+  <div *ngIf="loading" class="text-blue-600 font-medium mt-4">⏳ Cargando mediciones...</div>
+  <div *ngIf="errorMessage" class="text-red-600 font-semibold mt-4">{{ errorMessage }}</div>
+
+  <!-- Resultados -->
+  <div *ngIf="results && results.length > 0 && !loading" class="mt-8">
+    <h3 class="text-lg font-semibold text-gray-800 mb-4">📈 Mediciones encontradas:</h3>
+
+    <!-- Información general -->
+    <div class="mb-4">
+      <p class="font-semibold text-gray-700">🔧 Sensor: <span class="font-normal">{{ results[currentPage].sensor_name }}</span></p>
+      <p class="font-semibold text-gray-700">🏢 Compañía: <span class="font-normal">{{ results[currentPage].company_name }}</span></p>
+    </div>
+
+    <!-- Tabla de mediciones -->
+    <div class="overflow-x-auto">
+      <table class="min-w-full border border-gray-200 text-sm">
+        <thead class="bg-green-600 text-white">
+          <tr>
+            <th class="px-4 py-2 text-left">Correlativo</th>
+            <th class="px-4 py-2 text-left">Métrica</th>
+            <th class="px-4 py-2 text-left">Valor</th>
+            <th class="px-4 py-2 text-left">Fecha (Epoch)</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white">
+          <tr *ngFor="let record of results[currentPage].records"
+              class="border-t border-gray-200 hover:bg-gray-50">
+            <td class="px-4 py-2">{{ record.correlative }}</td>
+            <td class="px-4 py-2">{{ record.metric_name }}</td>
+            <td class="px-4 py-2">{{ record.metric_value }}</td>
+            <td class="px-4 py-2">{{ record.datetime_epoch }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Paginación -->
+    <div class="flex justify-between items-center mt-6">
+      <button [disabled]="currentPage === 0" (click)="prevPage()"
+        class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded disabled:opacity-50">
+        ◀ Anterior
+      </button>
+      <span class="text-gray-600">Página {{ currentPage + 1 }} de {{ results.length }}</span>
+      <button [disabled]="currentPage === results.length - 1" (click)="nextPage()"
+        class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded disabled:opacity-50">
+        Siguiente ▶
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="results && results.length === 0 && !loading" class="text-gray-500 mt-4">
+    No se encontraron mediciones en ese rango de tiempo.
+  </div>
+</div>

@@ -37,7 +37,8 @@ export class CompanyComponent implements OnInit {
     this.errorMessage = '';
     this.companyService.getCompanies(this.field, this.value).subscribe({
       next: (data) => {
-        this.results = data;
+        this.results = data.filter((company: any) => company.isCompanyActive); // <-- solo activos
+        console.log('data company', this.results);
         this.loading = false;
       },
       error: (err) => {
@@ -79,7 +80,10 @@ export class CompanyComponent implements OnInit {
     this.companyService.deleteCompany(companyId).subscribe({});
     this.delete = true;
     this.deleteMessage = '✅ Se Ha desactivado la compañia'; 
-    this.search(); 
+    setTimeout(() => {
+      this.search(); 
+    }, 3000);
+    
     this.updateMessage();
   }
 
@@ -100,6 +104,10 @@ export class CompanyComponent implements OnInit {
       next: (response) => {
         this.addMessage = 'Compañía actualizada con éxito';
         this.addError = false;
+        // ✅ Limpiar campos del formulario
+      this.companyId = null;
+      this.companyName = '';
+      this.companyApiKey = '';
         this.search(); 
       },
       error: (error) => {
