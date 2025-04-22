@@ -10,7 +10,9 @@
         <input
           type="date"
           [(ngModel)]="fromEpoch"
-          class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          [max]="maxDate"/>
+
     </div>
 
     <div>
@@ -20,7 +22,10 @@
         <input
           type="date"
           [(ngModel)]="toEpoch"
-          class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          (change)="validateToDate()"
+          [max]="maxDate"/>
+
     </div>
 
     <div>
@@ -59,7 +64,7 @@
             <th class="px-4 py-2 text-left">Correlativo</th>
             <th class="px-4 py-2 text-left">Métrica</th>
             <th class="px-4 py-2 text-left">Valor</th>
-            <th class="px-4 py-2 text-left">Fecha (Epoch)</th>
+            <th class="px-4 py-2 text-left">Fecha</th>
           </tr>
         </thead>
         <tbody class="bg-white">
@@ -68,7 +73,7 @@
             <td class="px-4 py-2">{{ record.correlative }}</td>
             <td class="px-4 py-2">{{ record.metric_name }}</td>
             <td class="px-4 py-2">{{ record.metric_value }}</td>
-            <td class="px-4 py-2">{{ record.datetime_epoch }}</td>
+            <td class="px-4 py-2">{{ record.datetime_legible | date:'medium' }} <td>
           </tr>
         </tbody>
       </table>

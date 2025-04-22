@@ -4,17 +4,18 @@ import {
   HttpClientModule,
   HttpHeaders,
 } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit,  } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MeasurementService } from '../../../auth/services/measurement.service';
-
 @Component({
   selector: 'app-data-view',
-  imports: [CommonModule, FormsModule, HttpClientModule],
+  imports: [CommonModule, FormsModule, HttpClientModule ],
   templateUrl: './data-view.component.html',
   styleUrl: './data-view.component.css',
 })
-export class DataViewComponent {
+
+export class DataViewComponent implements OnInit  {
+  
   fromEpoch: any;
   toEpoch: any;
   companyApiKey: string = '';
@@ -22,11 +23,27 @@ export class DataViewComponent {
   loading = false;
   errorMessage = '';
   currentPage: number = 0;
+  maxDate: string = '';
+
+
 
   constructor(private http: HttpClient) {}
   measurementService = inject(MeasurementService);
 
+  ngOnInit() {
+    // Obtiene la fecha actual en formato YYYY-MM-DD
+    const today = new Date();
+    //this.maxDate = today.toISOString().split('T')[0];
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+
+    //this.maxDate = `${day}-${month}-${year}`;
+     this.maxDate = `${year}-${month}-${day}`;
+    console.log(today,'fecha', this.maxDate);
+  }
   buscarMediciones() {
+    
     this.loading = true;
     this.errorMessage = '';
     this.results = [];
@@ -73,6 +90,13 @@ export class DataViewComponent {
   prevPage() {
     if (this.currentPage > 0) {
       this.currentPage--;
+    }
+  }
+
+  validateToDate() {
+    if (this.toEpoch && this.toEpoch < this.fromEpoch) {
+      alert('La fecha "Hasta" no puede ser menor a la fecha actual.');
+      this.toEpoch = 0; // Restablecer la fecha si no es válida
     }
   }
 }

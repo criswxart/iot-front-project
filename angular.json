@@ -91,9 +91,12 @@
               }
             ],
             "styles": [
+              "node_modules/flatpickr/dist/flatpickr.min.css",
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/flatpickr/dist/flatpickr.min.js"
+            ]
           }
         }
       }
